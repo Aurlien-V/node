@@ -1,0 +1,218 @@
+{
+    "definition": {
+        "openapi": "3.1.0",
+        "info": {
+            "title": "LogRocket Express API with Swagger",
+            "version": "0.1.0",
+            "description": "This is a simple CRUD API application made with Express and documented with Swagger",
+            "license": {
+                "name": "MIT",
+                "url": "https://spdx.org/licenses/MIT.html"
+            },
+            "contact": {
+                "name": "LogRocket",
+                "url": "https://logrocket.com",
+                "email": "info@email.com"
+            }
+        },
+        "servers": [
+            {
+                "url": "http://localhost:3000/api/v1"
+            }
+        ],
+        "components": {
+            "schemas": {
+                "music": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "integer",
+                            "description": "Id de la musique"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "Nom de la musique"
+                        },
+                        "cover": {
+                            "type": "string",
+                            "description": "Lien de la cover de la musique"
+                        },
+                        "sound": {
+                            "type": "string",
+                            "description": "Lien du fichier de la musique"
+                        },
+                        "category": {
+                            "type": "string",
+                            "description": "Nom de la catégorie de la musique"
+                        }
+                    },
+                    "example": {
+                        "id": 2,
+                        "cover": "the_sound_of_silence_cover.jpg",
+                        "sound": "Disturbed-The_Sound_Of_Silence.mp3",
+                        "title": "The Sound of Silence",
+                        "category": "pop"
+                    }
+                },
+                "addMusic": {
+                    "type": "object",
+                    "properties": {
+                        "message": {
+                            "type": "string",
+                            "description": "Message of the recipe"
+                        },
+                        "result": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/music"
+                        }
+                    }
+                },
+                "responseMusic": {
+                    "type": "object",
+                    "properties": {
+                        "result": {
+                            "type": "object",
+                            "$ref": "#/components/schemas/music"
+                        }
+                    }
+                },
+                "error": {
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "type": "string",
+                            "description": "Message of the error"
+                        }
+                    }
+                }
+            }
+        },
+        "paths": {
+            "/music": {
+                "get": {
+                    "summary": "Retourne tout les musiques de la bdd",
+                    "tags": [
+                        "music"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Tout les musiques de la bdd.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/music"
+                                    }
+                                }
+                            }
+                        },
+                        "500": {
+                            "description": "Some server error"
+                        }
+                    }
+                },
+                "post": {
+                    "summary": "Permet d'ajouter une musique a la bdd.",
+                    "tags": [
+                        "music"
+                    ],
+                    "requestBody": {
+                        "required": true,
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/music"
+                                }
+                            }
+                        }
+                    },
+                    "responses": {
+                        "201": {
+                            "description": "Create music in database",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/addMusic"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/music/{id}": {
+                "get": {
+                    "summary": "Get information about on music",
+                    "tags": [
+                        "music"
+                    ],
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "id",
+                            "schema": {
+                                "type": "integer"
+                            },
+                            "required": true,
+                            "description": "Id of the music"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "music when id it ok",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/responseMusic"
+                                    }
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "Error music not found",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/error"
+                                    }
+                                }
+                            }
+                        },
+                        "405": {
+                            "description": "Error param is not a number",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/music/random": {
+                "get": {
+                    "summary": "Permet de récuperer une musique aléatoire",
+                    "tags": [
+                        "music"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "La musique selectionner alétaoirement.",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/responseMusic"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "apis": [
+        "./routes/*.js"
+    ]
+}

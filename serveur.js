@@ -1,15 +1,18 @@
-const express = require('express')
+const express = require('express');
 const app = express()
 const port = 3000
 const version = "v1"
-const router = require('./routes/routes')
+const router = require('./routes/routes');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+const options = require('./swagger.json');
+const specs = swaggerJsdoc(options);
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use (`/api/${version}/`, router)
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(`/api/${version}`, router);
+app.use( `/api/${version}/api-docs`, swaggerUi.serve, swaggerUi.setup(specs, { explorer : true }));
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-})
-
-
+  console.log(`Example app listening on port ${port}`)
+});
