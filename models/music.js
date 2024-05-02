@@ -1,5 +1,11 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite:');
+
+const sequelize = new Sequelize('database', 'username', 'password', {
+  host: 'localhost',
+  dialect: 'sqlite',
+  storage: './db/database.sqlite',
+  database: './db/database.sqlite'
+});
 
 const Music = sequelize.define(
   'Music',
@@ -34,6 +40,6 @@ const Music = sequelize.define(
   // Code here
 })();
 // `sequelize.define` also returns the model
-console.log(Music === sequelize.models.Music); // true
+console.log(Music === sequelize.models.music); // true
 module.exports = Music;
 
