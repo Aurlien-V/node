@@ -8,6 +8,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const options = require('./swagger.json');
 const specs = swaggerJsdoc(options);
 
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(`/api/${version}`, router);
