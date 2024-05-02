@@ -1,5 +1,6 @@
 
 const express = require('express');
+const { Sequelize } = require('sequelize');
 const cors = require('cors')
 const app = express()
 const port = 3000
@@ -9,6 +10,11 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const options = require('./swagger.json');
 const specs = swaggerJsdoc(options);
+
+const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'sqlite',
+  });
 
 app.use(cors())
 app.use(express.json());
